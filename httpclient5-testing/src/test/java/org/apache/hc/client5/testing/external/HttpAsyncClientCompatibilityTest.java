@@ -88,7 +88,16 @@ public class HttpAsyncClientCompatibilityTest {
                         new HttpHost("http", "localhost", 8080), null, null),
                 new HttpAsyncClientCompatibilityTest(
                         HttpVersion.HTTP_2_0,
-                        new HttpHost("https", "localhost", 8443), null, null)
+                        new HttpHost("https", "localhost", 8443), null, null),
+                new HttpAsyncClientCompatibilityTest(
+                        HttpVersion.HTTP_2_0,
+                        new HttpHost("https", "localhost", 8443), new HttpHost("localhost", 8888), null),
+                new HttpAsyncClientCompatibilityTest(
+                        HttpVersion.HTTP_2_0,
+                        new HttpHost("https", "localhost", 8443), new HttpHost("localhost", 8888),
+                        new UsernamePasswordCredentials("squid", "nopassword".toCharArray())),
+                // HTTP/2 without TLS (scheme 'http') is left out on purpose as a HTTP1.1 proxy will probably choke on
+                // the first unencrypted request line
         };
         for (final HttpAsyncClientCompatibilityTest test: tests) {
             try {
